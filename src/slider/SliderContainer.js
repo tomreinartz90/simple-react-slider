@@ -1,8 +1,8 @@
 /**
  * Created by taren on 19-7-2018.
  */
-import React, {Component} from 'react';
-import {Slide} from "./Slide";
+import React, { Component } from 'react';
+import { Slide } from './Slide';
 
 export class SliderContainer extends Component {
 
@@ -12,7 +12,21 @@ export class SliderContainer extends Component {
   constructor() {
     super();
     this.container = React.createRef();
-    this.state = {activeSlide: 0, containerWidth: 0, slideWidth: 0};
+    this.state = { activeSlide: 0, containerWidth: 0, slideWidth: 0 };
+  }
+
+  /**
+   * Add event listener
+   */
+  componentDidMount() {
+    window.addEventListener('resize', () => this.updateDimensionsInState());
+  }
+
+  /**
+   * Remove event listener
+   */
+  componentWillUnmount() {
+    window.removeEventListener('resize', () => this.updateDimensionsInState());
   }
 
   next = () => {
@@ -24,7 +38,7 @@ export class SliderContainer extends Component {
   };
 
   setActiveSlide(slide) {
-    this.setState({activeSlide: slide});
+    this.setState({ activeSlide: slide });
   }
 
   getWidthOfContainer() {
@@ -45,12 +59,12 @@ export class SliderContainer extends Component {
   }
 
   updateDimensionsInState() {
-    const {containerWidth, slideWidth} = this.state;
+    const { containerWidth, slideWidth } = this.state;
     const newContainerWidth = this.getWidthOfContainer();
     const newSlideWidth = this.getWidthOfFirstSlide();
 
     if (newContainerWidth !== 0 && newSlideWidth !== 0 && (containerWidth !== newContainerWidth || slideWidth !== newSlideWidth)) {
-      this.setState({containerWidth: newContainerWidth, slideWidth: newSlideWidth});
+      this.setState({ containerWidth: newContainerWidth, slideWidth: newSlideWidth });
     }
   }
 
@@ -63,9 +77,10 @@ export class SliderContainer extends Component {
     }
   };
 
+
   render() {
-    const {activeSlide, containerWidth, slideWidth} = this.state;
-    const {dataSet, slideTemplate} = this.props;
+    const { activeSlide, containerWidth, slideWidth } = this.state;
+    const { dataSet, slideTemplate } = this.props;
     const visibleSlides = Math.floor((containerWidth || 1) / (slideWidth || 1));
 
     const styles = {
@@ -86,6 +101,5 @@ export class SliderContainer extends Component {
           <div className="slider-container__next-button" onClick={this.next}>next</div>
         )}
       </div>);
-
   }
 }
