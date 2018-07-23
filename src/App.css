@@ -42,12 +42,13 @@
 
 .slider-container__slide {
   width: 100%;
-  max-width: 20%;
-  flex-basis: 20%;
+  max-width: 40%;
+  flex: 1 0 40%;
   text-align: center;
-  padding: 2rem 10rem;
+  /*padding: 2rem 10rem;*/
   border: thin solid gray;
-  /*margin: 1rem;*/
+  min-height: 5rem;
+  /* margin: 1rem; */
 }
 
 .slider-container__prev-button {
@@ -70,4 +71,5 @@
   display: flex;
   transition: .5s;
   z-index: 1;
+  width: 100%;
 }

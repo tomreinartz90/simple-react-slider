@@ -5,13 +5,19 @@ import {SliderContainer} from './slider/SliderContainer';
 import {Slide} from './slider/Slide';
 
 class App extends Component {
+
+  getSlide = (data) => {
+    return (
+      <div>
+        {data}
+      </div>);
+  };
+
   render() {
     const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     return (
       <div className="App">
-        <SliderContainer>
-          {items.map((item, index) => <Slide key={index}>item</Slide>)}
-        </SliderContainer>
+        <SliderContainer dataSet={items} slideTemplate={this.getSlide} />
       </div>
     );
   }
