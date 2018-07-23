@@ -9,7 +9,6 @@ export class Slide extends Component {
   constructor() {
     super();
     this.container = React.createRef();
-
   }
 
 

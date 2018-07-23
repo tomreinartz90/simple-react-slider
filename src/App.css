@@ -45,10 +45,8 @@
   max-width: 40%;
   flex: 1 0 40%;
   text-align: center;
-  /*padding: 2rem 10rem;*/
   border: thin solid gray;
   min-height: 5rem;
-  /* margin: 1rem; */
 }
 
 .slider-container__prev-button {

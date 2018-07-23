@@ -20,6 +20,11 @@ export class SliderContainer extends Component {
    */
   componentDidMount() {
     window.addEventListener('resize', () => this.updateDimensionsInState());
+    this.setRefsForDataSet();
+  }
+
+  componentDidUpdate() {
+    this.setRefsForDataSet();
   }
 
   /**
@@ -29,16 +34,12 @@ export class SliderContainer extends Component {
     window.removeEventListener('resize', () => this.updateDimensionsInState());
   }
 
-  next = () => {
-    this.setActiveSlide(this.state ? (this.state.activeSlide + 1) : 1);
-  };
 
-  prev = () => {
-    this.setActiveSlide(this.state ? (this.state.activeSlide - 1) : 0);
-  };
-
-  setActiveSlide(slide) {
-    this.setState({ activeSlide: slide });
+  setRefsForDataSet() {
+    if (this.props.dataSet && this.props.dataSet.length && this.props.dataSet.length != this.slideRefs.length) {
+      this.slideRefs = this.props.dataSet.map(() => React.createRef());
+    }
+    this.updateDimensionsInState();
   }
 
   getWidthOfContainer() {
@@ -49,8 +50,8 @@ export class SliderContainer extends Component {
   }
 
   getWidthOfFirstSlide() {
-    if (this.slideRefs && this.slideRefs.length && this.slideRefs[0] !== null) {
-      const firstSlide = this.slideRefs[0].container.current;
+    if (this.slideRefs && this.slideRefs.length && this.slideRefs[0] && this.slideRefs[0].current) {
+      const firstSlide = this.slideRefs[0].current.container.current;
       if (firstSlide) {
         return firstSlide.getBoundingClientRect().width;
       }
@@ -68,15 +69,17 @@ export class SliderContainer extends Component {
     }
   }
 
-  setSlideRef = (ref, index) => {
-    if (index === 0 && this.slideRefs[0] !== ref) {
-      this.slideRefs = [ref];
-      this.updateDimensionsInState();
-    } else {
-      this.slideRefs.push(ref);
-    }
+  next = () => {
+    this.setActiveSlide(this.state ? (this.state.activeSlide + 1) : 1);
   };
 
+  prev = () => {
+    this.setActiveSlide(this.state ? (this.state.activeSlide - 1) : 0);
+  };
+
+  setActiveSlide(slide) {
+    this.setState({ activeSlide: slide });
+  }
 
   render() {
     const { activeSlide, containerWidth, slideWidth } = this.state;
@@ -88,8 +91,7 @@ export class SliderContainer extends Component {
     };
 
     const slides = dataSet.map((item, index) =>
-      <Slide key={index} ref={(ref) => this.setSlideRef(ref, index)}>{slideTemplate(item)}</Slide>);
-
+      <Slide key={index} ref={this.slideRefs[index]}>{slideTemplate(item)}</Slide>);
 
     return (
       <div className="slider-container" ref={this.container}>
